@@ -4,5 +4,5 @@ namespace Gupalo\ArrayUtils\Balancer;
 
 interface BalancerInterface
 {
-    public function addItem(): BalancerBucketInterface;
+    public function chooseBucket(): BucketInterface;
 }

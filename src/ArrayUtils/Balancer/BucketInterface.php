@@ -2,13 +2,15 @@
 
 namespace Gupalo\ArrayUtils\Balancer;
 
-interface BalancerBucketInterface
+interface BucketInterface
 {
     public function getName(): string;
 
     public function getWeight(): float;
 
-    public function countItems(): int;
+    public function getCount(): int;
+
+    public function getScore(): float;
 
     public function addItem(): void;
 }

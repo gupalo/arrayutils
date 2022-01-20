@@ -21,7 +21,7 @@ class SemiRandomBalancer extends FairBalancer
         $this->randomStrategyProbability = $randomStrategyProbability;
     }
 
-    public function addItem(): BalancerBucketInterface
+    public function chooseBucket(): BucketInterface
     {
         $this->validateBuckets();
 
