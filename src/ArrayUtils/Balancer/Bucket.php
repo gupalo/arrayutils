@@ -2,7 +2,7 @@
 
 namespace Gupalo\ArrayUtils\Balancer;
 
-class BalancerBucket implements BalancerBucketInterface
+class Bucket implements BucketInterface
 {
     public function __construct(
         private string $name,
@@ -22,9 +22,14 @@ class BalancerBucket implements BalancerBucketInterface
         return $this->weight;
     }
 
-    public function countItems(): int
+    public function getCount(): int
     {
         return $this->countItems;
+    }
+
+    public function getScore(): float
+    {
+        return $this->weight * $this->countItems;
     }
 
     public function addItem(): void

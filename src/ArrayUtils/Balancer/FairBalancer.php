@@ -7,23 +7,22 @@ use Throwable;
 
 class FairBalancer implements BalancerInterface
 {
-    /** @var BalancerBucketInterface[] */
+    /** @var BucketInterface[] */
     protected array $buckets;
 
-    protected ?string $seed;
+    protected string $seed;
 
     public function __construct(
         array $buckets,
-        string $seed = null
+        string $seed = ''
     ) {
         $this->buckets = array_values($buckets);
         $this->seed = $seed;
+        $this->validateBuckets();
     }
 
-    public function addItem(): BalancerBucketInterface
+    public function chooseBucket(): BucketInterface
     {
-        $this->validateBuckets();
-
         $buckets = $this->selectMinCountBuckets();
 
         return $this->pickRandomBucket($buckets);
@@ -37,10 +36,10 @@ class FairBalancer implements BalancerInterface
     }
 
     /**
-     * @param BalancerBucketInterface[] $buckets
-     * @return BalancerBucketInterface
+     * @param BucketInterface[] $buckets
+     * @return BucketInterface
      */
-    protected function pickRandomBucket(array $buckets): BalancerBucketInterface
+    protected function pickRandomBucket(array $buckets): BucketInterface
     {
         if (!$buckets) {
             throw new LogicException('no minCountBuckets');
@@ -53,33 +52,25 @@ class FairBalancer implements BalancerInterface
     }
 
     /**
-     * @return BalancerBucketInterface[]
+     * @return BucketInterface[]
      */
     protected function selectMinCountBuckets(): array
     {
-        $minCount = null;
-        foreach ($this->buckets as $bucket) {
-            $count = $bucket->countItems() * $bucket->getWeight();
-            if ($minCount === null || $count <= $minCount) {
-                $minCount = $count;
-            }
-        }
-        $minCount += 0.00001; // to fix float
+        $buckets = $this->buckets;
+        // sort DESC
+        usort(
+            $buckets,
+            static fn (BucketInterface $a, BucketInterface $b): int => $a->getScore() <=> $b->getScore()
+        );
+        $minScore = $buckets[0]->getScore();
 
-        $minCountBuckets = [];
-        foreach ($this->buckets as $bucket) {
-            if ($bucket->countItems() * $bucket->getWeight() <= $minCount) {
-                $minCountBuckets[] = $bucket;
-            }
-        }
-
-        return $minCountBuckets;
+        return array_filter($buckets, static fn (BucketInterface $bucket): bool => $bucket->getScore() <= $minScore);
     }
 
     protected function random(int $max): int
     {
         $random = null;
-        if ($this->seed === null) {
+        if (!$this->seed) {
             try {
                 $random = random_int(0, $max);
             } catch (Throwable) {
@@ -98,7 +89,7 @@ class FairBalancer implements BalancerInterface
     {
         $seed = $this->seed;
         foreach ($this->buckets as $bucket) {
-            $seed .= $bucket->getName() . $bucket->countItems();
+            $seed .= $bucket->getName() . $bucket->getCount();
         }
 
         return $seed;
