@@ -14,7 +14,7 @@ class SemiRandomBalancer extends FairBalancer
     public function __construct(
         array $buckets,
         float $randomStrategyProbability = 0.7,
-        string $seed = null,
+        string $seed = '',
     ) {
         parent::__construct($buckets, $seed);
 
