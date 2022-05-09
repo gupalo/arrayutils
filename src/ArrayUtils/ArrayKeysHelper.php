@@ -11,21 +11,41 @@ class ArrayKeysHelper
      */
     public static function index(array $a, array|string $keys = 'id'): array
     {
+        $result = [];
+        foreach ($a as $item) {
+            $result[self::buildKeyForArrayItem($item, $keys)] = $item;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param array $a
+     * @param array|string $keys
+     * @return array
+     */
+    public static function indexAndGroup(array $a, array|string $keys = 'id'): array
+    {
+        $result = [];
+        foreach ($a as $item) {
+            $result[self::buildKeyForArrayItem($item, $keys)][] = $item;
+        }
+
+        return $result;
+    }
+
+    private static function buildKeyForArrayItem(array $item, array|string $keys = 'id'): string
+    {
         if (!is_array($keys)) {
             $keys = [$keys];
         }
 
-        $result = [];
-        foreach ($a as $item) {
-            $indexParts = [];
-            foreach ($keys as $key) {
-                $indexParts[] = (string)($item[$key] ?? '');
-            }
-
-            $result[implode('~', $indexParts)] = $item;
+        $indexParts = [];
+        foreach ($keys as $key) {
+            $indexParts[] = (string)($item[$key] ?? '');
         }
 
-        return $result;
+        return implode('~', $indexParts);
     }
 
     public static function fill($a, $keys, $defaultValue = null): array
