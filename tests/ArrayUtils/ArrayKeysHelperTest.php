@@ -26,6 +26,36 @@ class ArrayKeysHelperTest extends TestCase
         self::assertSame($aIndexed2, ArrayKeysHelper::index($a, ['k2', 'skip1', 'skip2']));
     }
 
+    public function testIndexGroup(): void
+    {
+        $a = [
+            ['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3.1', 'skip1' => '1', 'removed' => null],
+            ['k3' => 'v3.2', 'k2' => 'v2', 'k4' => 'v4', 'skip2' => '2'],
+            ['k3' => 'v3.2', 'k2' => 'v2', 'k4' => 'v4', 'skip2' => '2'],
+        ];
+        $aIndexed1 = [
+            'v3.1' => [
+                ['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3.1', 'skip1' => '1', 'removed' => null],
+            ],
+            'v3.2' => [
+                ['k3' => 'v3.2', 'k2' => 'v2', 'k4' => 'v4', 'skip2' => '2'],
+                ['k3' => 'v3.2', 'k2' => 'v2', 'k4' => 'v4', 'skip2' => '2'],
+            ],
+        ];
+        $aIndexed2 = [
+            'v2~1~' => [
+                ['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3.1', 'skip1' => '1', 'removed' => null],
+            ],
+            'v2~~2' => [
+                ['k3' => 'v3.2', 'k2' => 'v2', 'k4' => 'v4', 'skip2' => '2'],
+                ['k3' => 'v3.2', 'k2' => 'v2', 'k4' => 'v4', 'skip2' => '2'],
+            ]
+        ];
+
+        self::assertSame($aIndexed1, ArrayKeysHelper::indexAndGroup($a, 'k3'));
+        self::assertSame($aIndexed2, ArrayKeysHelper::indexAndGroup($a, ['k2', 'skip1', 'skip2']));
+    }
+
     public function testFilter(): void
     {
         $a = ['k1' => 'v1', 'k2' => 'v2', 'k4' => -100.009999999999999999999999];
