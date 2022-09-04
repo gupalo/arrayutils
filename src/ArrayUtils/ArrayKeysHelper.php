@@ -4,17 +4,6 @@ namespace Gupalo\ArrayUtils;
 
 class ArrayKeysHelper
 {
-    public static function createWithKeys(array $keys, $value = null): array
-    {
-        $result = [];
-
-        foreach ($keys as $key) {
-            $result[$key] = $value;
-        }
-
-        return $result;
-    }
-
     /**
      * @param array $a
      * @param array|string $keys

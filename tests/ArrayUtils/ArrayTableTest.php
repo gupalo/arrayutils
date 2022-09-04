@@ -1,5 +1,7 @@
 <?php
 
+namespace Gupalo\Tests\ArrayUtils;
+
 use Gupalo\ArrayUtils\ArrayTable;
 use PHPUnit\Framework\TestCase;
 

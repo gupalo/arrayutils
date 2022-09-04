@@ -7,13 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class ArrayKeysHelperTest extends TestCase
 {
-    public function testCreateWithKeys(): void
-    {
-        self::assertSame(['k1' => null, 'k2' => null], ArrayKeysHelper::createWithKeys(['k1', 'k2']));
-
-        self::assertSame(['k1' => 'test', 'k2' => 'test'], ArrayKeysHelper::createWithKeys(['k1', 'k2'], 'test'));
-    }
-
     public function testIndex(): void
     {
         $a = [
