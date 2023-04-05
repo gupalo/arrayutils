@@ -93,3 +93,26 @@ Comparing is smart - if compared values are float, they are rounded with precisi
 
 * `createPreserveKeys(array $a)`: ensure that all values are int
 * `create(array $a)`: ensure that all values are int -> values
+
+
+## Balancer
+
+Problem to solve: you have some items and need to split them to some buckets.
+You may configure different strategies how to distribute your items between the buckets.
+Buckets should implement `BucketInterface`, balancer should implement `BalancerInterface`
+
+### SemiRandomBalancer
+
+It's not fully random, you set seed so multiple runs with the same seed and same items will lead to the same result.
+
+### FairBalancer
+
+Try to make same weighted count of items in same bucket.
+
+Example: A/B test where you want to send 90% of users to "A" page and 10% to "B" page.
+You could use simple random but with low amount of users it's quite probable that you have 20 users and all will see
+page "A" or 5 users that go to "B". Then you'll have hard time explaining probability theory.
+With this balancer you may be sure that 1 of the first 10 users will go to "B" and most probably 2 of 20 users will
+land there.
+
+
