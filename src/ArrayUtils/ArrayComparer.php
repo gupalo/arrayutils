@@ -17,12 +17,12 @@ class ArrayComparer
      * ]
      */
     #[ArrayShape(['created' => "array", 'updated' => "array", 'removed' => "array"])]
-    public static function compare(array $a1, array $a2, array $keys): array
+    public static function compare(array $a1, array $a2, array $keys, string $idField = 'id'): array
     {
         $result = ['created' => [], 'updated' => [], 'removed' => []];
 
         foreach ($a1 as $key => $value) {
-            $id = $value['id'] ?? $a2[$key]['id'] ?? null;
+            $id = $value[$idField] ?? $a2[$key][$idField] ?? null;
 
             $value = ArrayKeysHelper::filter($value, $keys);
             if (!array_key_exists($key, $a2)) {
@@ -31,11 +31,11 @@ class ArrayComparer
             }
 
             $value2 = ArrayKeysHelper::filter($a2[$key], $keys);
-            $id ??= $value2['id'] ?? null;
+            $id ??= $value2[$idField] ?? null;
             $updated = self::compareOne($value, $value2, $keys);
             if ($updated) {
-                if ($id && empty($updated['id'])) {
-                    $updated['id'] = $id;
+                if ($id && empty($updated[$idField])) {
+                    $updated[$idField] = $id;
                 }
                 $result['updated'][$key] = $updated;
             }
