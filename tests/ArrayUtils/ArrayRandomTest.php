@@ -30,5 +30,7 @@ class ArrayRandomTest extends TestCase
         self::assertContains(ArrayRandom::pickMultiple(['a', 'b'], count: 2), [['a', 'b'], ['b', 'a']]);
         self::assertContains(ArrayRandom::pickMultiple(['k1' => 'a', 'k2' => 'b'], count: 2), [['a', 'b'], ['b', 'a']]);
         self::assertContains(ArrayRandom::pickMultiple(['k1' => 'a', 'k2' => 'b'], count: 2, preserveKeys: true), [['k1' => 'a', 'k2' => 'b'], ['k2' => 'b', 'k1' => 'a']]);
+
+        self::assertContains(ArrayRandom::pickMultiple(['k1' => 'a', 'k2' => 'b'], count: 100, preserveKeys: true), [['k1' => 'a', 'k2' => 'b'], ['k2' => 'b', 'k1' => 'a']]);
     }
 }

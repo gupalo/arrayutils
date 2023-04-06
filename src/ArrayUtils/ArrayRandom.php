@@ -19,7 +19,7 @@ class ArrayRandom
             return $default;
         }
 
-        $keys = array_rand($items, $count);
+        $keys = array_rand($items, min($count, count($items)));
         if ($count === 1) {
             $keys = [$keys]; // array_rand returns "key" when count=1
         }
