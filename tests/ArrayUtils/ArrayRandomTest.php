@@ -36,6 +36,11 @@ class ArrayRandomTest extends TestCase
         self::assertContains(ArrayRandom::pickMultiple(['k1' => 'a', 'k2' => 'b'], count: 100, preserveKeys: true), [['k1' => 'a', 'k2' => 'b'], ['k2' => 'b', 'k1' => 'a']]);
     }
 
+    public function testPickMultiple_MoreThanCountElements(): void
+    {
+        self::assertSame(ArrayRandom::pickMultiple(['qqq'], count: 3), ['qqq']);
+    }
+
     private function generator(): Generator
     {
         yield 'a';

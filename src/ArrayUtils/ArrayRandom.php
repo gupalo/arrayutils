@@ -26,7 +26,7 @@ class ArrayRandom
         }
 
         $keys = array_rand($items, min($count, count($items)));
-        if ($count === 1) {
+        if (!is_array($keys)) {
             $keys = [$keys]; // array_rand returns "key" when count=1
         }
 
