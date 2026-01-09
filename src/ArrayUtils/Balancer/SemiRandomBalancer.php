@@ -4,13 +4,10 @@
 
 namespace Gupalo\ArrayUtils\Balancer;
 
-use JetBrains\PhpStorm\Pure;
-
 class SemiRandomBalancer extends FairBalancer
 {
     private float $randomStrategyProbability;
 
-    #[Pure]
     public function __construct(
         array $buckets,
         float $randomStrategyProbability = 0.7,

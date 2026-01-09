@@ -70,7 +70,7 @@ class ArrayKeysHelper
                 if (preg_match('#^\d+$#', $value)) {
                     $value = (int)$value;
                 } elseif (preg_match('#^\d+\.\d+$#', $value)) {
-                    $value = (float)round($value, 8);
+                    $value = round((float)$value, 8);
                 }
             } elseif (is_float($value)) {
                 $value = round($value, 8);

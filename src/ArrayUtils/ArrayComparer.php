@@ -2,8 +2,6 @@
 
 namespace Gupalo\ArrayUtils;
 
-use JetBrains\PhpStorm\ArrayShape;
-
 class ArrayComparer
 {
     /**
@@ -16,7 +14,6 @@ class ArrayComparer
      *      'removed' => [key => id, key => id]
      * ]
      */
-    #[ArrayShape(['created' => "array", 'updated' => "array", 'removed' => "array"])]
     public static function compare(array $a1, array $a2, array $keys, string $idField = 'id'): array
     {
         $result = ['created' => [], 'updated' => [], 'removed' => []];
@@ -49,7 +46,6 @@ class ArrayComparer
         return $result;
     }
 
-    #[ArrayShape(['created' => "array", 'updated' => "array", 'removed' => "array"])]
     public static function compareFlat(array $a1, array $a2): array
     {
         $result = ['created' => [], 'updated' => [], 'removed' => []];
@@ -97,7 +93,7 @@ class ArrayComparer
         return $result;
     }
 
-    private static function isFloat(mixed $value): int|false
+    private static function isFloat(mixed $value): bool
     {
         return (bool)preg_match('#^-?\d+\.\d+$#', (string)$value);
     }
