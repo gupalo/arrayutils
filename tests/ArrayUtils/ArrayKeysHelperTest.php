@@ -3,6 +3,7 @@
 namespace Gupalo\Tests\ArrayUtils;
 
 use Gupalo\ArrayUtils\ArrayKeysHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ArrayKeysHelperTest extends TestCase
@@ -62,6 +63,29 @@ class ArrayKeysHelperTest extends TestCase
         $expected = ['k1' => 'v1', 'k3' => null, 'k4' => -100.01];
 
         self::assertSame($expected, ArrayKeysHelper::filter($a, ['k1', 'k3', 'k4']));
+    }
+
+    #[DataProvider('dataFilter_CastsOnlyWhenRoundTripIsExact')]
+    public function testFilter_CastsOnlyWhenRoundTripIsExact(string $value, int|float|string $expected): void
+    {
+        self::assertSame(['k' => $expected], ArrayKeysHelper::filter(['k' => $value], ['k']));
+    }
+
+    public static function dataFilter_CastsOnlyWhenRoundTripIsExact(): array
+    {
+        return [
+            'int' => ['31', 31],
+            'zero' => ['0', 0],
+            'platform int max' => [(string)PHP_INT_MAX, PHP_INT_MAX],
+            'leading zero stays string' => ['031', '031'],
+            'beyond int64 stays string' => ['15822091625119787669899590652011', '15822091625119787669899590652011'],
+            'float' => ['1.5', 1.5],
+            'trailing zero stays string' => ['1.10', '1.10'],
+            'decimal column text stays string' => ['10.500000', '10.500000'],
+            'more than 8 decimals stays string' => ['0.123456789', '0.123456789'],
+            'leading zero float stays string' => ['01.5', '01.5'],
+            'non-numeric' => ['abc', 'abc'],
+        ];
     }
 
     public function testFilter_NotCreateMissing(): void

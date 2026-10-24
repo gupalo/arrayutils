@@ -58,7 +58,7 @@ Comparing is smart - if compared values are float, they are rounded with precisi
 * `index($a, array|string $keys = 'id')`: create indexed array where index may contain several fields
 * `indexAndGroup($a, array|string $keys = 'id')`: create indexed array but allow several items with same index
 * `fill($a, $keys, $defaultValue = null)`: ensure that all keys exist in array and all others are missing
-* `filter($a, $keys, $createMissingKeys = true)`: get these keys from array
+* `filter($a, $keys, $createMissingKeys = true)`: get these keys from array; numeric strings become int/float only when the number prints back as the same string (`'31'` → `31`, but `'031'`, `'1.10'` and ids beyond int64 stay strings)
 * `unset($a, $keys)`: unset these keys from each array item
 
 
