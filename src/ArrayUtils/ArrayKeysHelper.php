@@ -66,11 +66,15 @@ class ArrayKeysHelper
                 continue;
             }
             $value = $a[$key] ?? null;
+            // cast numeric strings only when the number prints back as the same string: '031', '1.10'
+            // and ids beyond int64 would otherwise lose zeros or saturate to PHP_INT_MAX
             if (is_string($value)) {
                 if (preg_match('#^\d+$#', $value)) {
-                    $value = (int)$value;
+                    $int = (int)$value;
+                    $value = (string)$int === $value ? $int : $value;
                 } elseif (preg_match('#^\d+\.\d+$#', $value)) {
-                    $value = round((float)$value, 8);
+                    $float = round((float)$value, 8);
+                    $value = (string)$float === $value ? $float : $value;
                 }
             } elseif (is_float($value)) {
                 $value = round($value, 8);
