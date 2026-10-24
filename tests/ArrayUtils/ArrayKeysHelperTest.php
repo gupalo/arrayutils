@@ -76,7 +76,7 @@ class ArrayKeysHelperTest extends TestCase
         return [
             'int' => ['31', 31],
             'zero' => ['0', 0],
-            'int64 max' => ['9223372036854775807', PHP_INT_MAX],
+            'platform int max' => [(string)PHP_INT_MAX, PHP_INT_MAX],
             'leading zero stays string' => ['031', '031'],
             'beyond int64 stays string' => ['15822091625119787669899590652011', '15822091625119787669899590652011'],
             'float' => ['1.5', 1.5],
